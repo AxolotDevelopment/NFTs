@@ -1,0 +1,40 @@
+TODO::
+--------------------------------------------------------------------------------
+
+BUGS:
+
+
+
+  CONTRACTS:
+  ------------------------------------------------------------------------------------------------
+  - User can unlock and keep voting, but result is taken from total locked attribute
+  - Opensea assets in rinkeby have id > uint256 !! they fail on import (overflow)
+
+  AUDITORY:
+  ------------------------------------------------------------------------------------------------
+  REMEMBER CHECK EFFECT INTERACTIONS PATTERN :D
+  FraktalMarket:
+  - Replace transfer() for AddressUpgradeable.sendValue() in:
+    -withdrawAccruedFees()
+    -rescueEth()
+    -makeOffer()
+    -createRevenuePayment()
+
+  - setMajority() does not check max value (10000 = 100%)
+  - setFee() does not check max value (10000 = 100%)
+  - setFee() uses >= 0 for a uint16 (never negative)
+
+  FraktalMarket, FraktalNFT, PaymentSplitterUpgradeable > check only externally called functions.
+      -external> public visibility
+
+  This is just a formal revision of patterns. Not an analysis of the program.
+
+  UI
+  ------------------------------------------------------------------------------------------------
+  - Opensea API is veery slow to detect transfers
+  - There is no tx handler (besides metamask)
+  - Incorrect networks does not work very well, does not detect network change (add listener)
+  - Does detect account change.. but is buggy..
+
+  SUBGRAPH
+------------------------------------------------------------------------------------------------
