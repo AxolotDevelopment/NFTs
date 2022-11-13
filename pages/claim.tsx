@@ -102,7 +102,7 @@ export default function Claim() {
   return (
     <VStack spacing="0" mb="12.8rem">
       <Head>
-        <title>Fraktal - Launch Partner Airdrop</title>
+        <title>Tokenize - Launch Partner Airdrop</title>
       </Head>
       <VStack w="96.4rem" spacing="0" justifyContent="space-between" mb="4rem">
         <Text className="semi-48">Launch Partner + Bonus Airdrop🎉</Text><Countdown date={1648382400000} renderer={renderer}/>,

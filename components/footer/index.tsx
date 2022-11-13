@@ -11,23 +11,23 @@ const urlLists = [
   {
     title: "Resources",
     items: [
-      { text: "Blog", url: "https://blog.fraktal.io/" },
-      { text: "Docs", url: "https://docs.fraktal.io/" },
-      { text: "Audit", url: "https://github.com/FraktalNFT/audits" }
+      { text: "Blog", url: "https://blog.tokenize.io/" },
+      { text: "Docs", url: "https://docs.tokenize.io/" },
+      { text: "Audit", url: "https://github.com/TokenizeNFT/audits" }
     ]
   },
   {
     title: "Get Involved",
     items: [
-      { text: "Stake", url: "https://docs.fraktal.io/fraktal-governance-token-frak/staking-frak" },
-      { text: "DAO", url: "https://dao.fraktal.io/#/" },
-      { text: "Github", url: "https://github.com/FraktalNFT" },
+      { text: "Stake", url: "https://docs.tokenize.io/tokenize-governance-token-frak/staking-frak" },
+      { text: "DAO", url: "https://dao.tokenize.io/#/" },
+      { text: "Github", url: "https://github.com/TokenizeNFT" },
     ]
   },
   {
     title: "Need Help?",
     items: [
-      { text: "How it Works", url: "https://docs.fraktal.io/marketplace/get-started" },
+      { text: "How it Works", url: "https://docs.tokenize.io/marketplace/get-started" },
       { text: "Tutorials", url: "https://www.youtube.com/channel/UCUpcKyPeUJ2Mhx7OWOSZL6w" },
       { text: "Support", url: "https://discord.com/invite/P6fCPvtZtq" }
     ]
@@ -35,24 +35,24 @@ const urlLists = [
 ]
 
 const socials = [
-  { url: "https://twitter.com/fraktalnft", icon: TwitterIcon },
-  { url: "https://www.instagram.com/fraktal.io/", icon: InstagramIcon },
+  { url: "https://twitter.com/tokenizenft", icon: TwitterIcon },
+  { url: "https://www.instagram.com/tokenize.io/", icon: InstagramIcon },
   { url: "https://discord.com/invite/P6fCPvtZtq", icon: DiscordIcon },
   { url: "https://www.youtube.com/channel/UCUpcKyPeUJ2Mhx7OWOSZL6w", icon: YoutubeIcon },
-  { url: "https://blog.fraktal.io/", icon: MediumIcon },
+  { url: "https://blog.tokenize.io/", icon: MediumIcon },
 ]
 
 const Footer: React.FC = () => {
   return (
     <Container
-      maxW={["100%", "38.4rem", "96.4rem"]}
+      maxW={["95%"]}
       py={["10rem"]}
     >
       <Flex direction={["column", "column", "row", "row"]} justify="space-between">
         <Box alignItems="start" flex={["1 1", "0.6 1", "1 1", "0.6 1"]}>
-          <Image src="/fraktal-full-logo.png" w={["100%", "320px"]}/>
+          <Image src="/tokenize-full-logo.png" w={["100%", "320px"]}/>
           <Text fontSize={16} my="40px" lineHeight="30px" fontWeight={500} color="grey.500">
-            Fraktal is a community first project, with a mission to to empower
+            Tokenize is a community first project, with a mission to to empower
             artists to be in full control of their work and have unlimited
             creative freedom.
           </Text>
@@ -67,7 +67,7 @@ const Footer: React.FC = () => {
             </Flex>
           </Box>
           <Text fontSize={10}>
-            © Fraktal Technologies Ltd.
+            © Tokenize Technologies Ltd.
           </Text>
         </Box>
 

@@ -18,11 +18,11 @@ import FrakButton from '@/components/button';
  * Contracts Calls
  */
 import {
-  importFraktal,
+  importTokenize,
   approveMarket,
   claimERC721,
   claimERC1155,
-  exportFraktal,
+  exportTokenize,
   getIndexUsed, getFraktionsIndex,
 } from '@/utils/contractCalls';
 /**
@@ -37,7 +37,7 @@ import {MAX_FRAKTIONS} from "@/utils/constants";
 
 const UserOwnership = ({
   fraktions,
-  isFraktalOwner,
+  isTokenizeOwner,
   collateral,
   isApproved,
   marketAddress,
@@ -79,7 +79,7 @@ const UserOwnership = ({
     let tx;
     if (tx || isApproved) {
       try {
-        await exportFraktal(tokenAddress, provider, marketAddress);
+        await exportTokenize(tokenAddress, provider, marketAddress);
       } catch (e) {
         setDefraking(false);
       }
@@ -96,7 +96,7 @@ const UserOwnership = ({
     }
   }
 
-  async function importFraktalToMarket() {
+  async function importTokenizeToMarket() {
     const actionOpts = { workflow: Workflow.FRAK_NFT };
 
     if (!isApproved) {
@@ -109,7 +109,7 @@ const UserOwnership = ({
       isUsed = await getIndexUsed(index, provider, tokenAddress);
     }
     if (isUsed == false) {
-      await importFraktal(
+      await importTokenize(
         tokenAddress,
         index,
         provider,
@@ -124,15 +124,15 @@ const UserOwnership = ({
   }
 
   useEffect(() => {
-    async function checkImportedFraktal() {
+    async function checkImportedTokenize() {
       if (window.location.search.includes('?frak=1')) {
         const fraktionIndex = await getFraktionsIndex(provider, tokenAddress);
         if (fraktionIndex === 0) {
-          importFraktalToMarket();
+          importTokenizeToMarket();
         }
       }
     }
-    checkImportedFraktal();
+    checkImportedTokenize();
   }, []);
 
   return (
@@ -156,7 +156,7 @@ const UserOwnership = ({
       >
         Your Ownership
       </div>
-      {!isFraktalOwner ? (
+      {!isTokenizeOwner ? (
         <div>
           <HStack
             sx={{ width: `100%` }}
@@ -244,7 +244,7 @@ const UserOwnership = ({
             {collateral && collateral.id && (
               <FrakButton onClick={() => claimNFT()}>Claim NFT</FrakButton>
             )}
-            <FrakButton onClick={() => importFraktalToMarket()}>FRAK IT</FrakButton>
+            <FrakButton onClick={() => importTokenizeToMarket()}>FRAK IT</FrakButton>
           </HStack>
         </VStack>
       )}

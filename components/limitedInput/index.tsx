@@ -14,7 +14,7 @@ import { ButtonProps } from '@chakra-ui/button';
 /**
  * Components
  */
-import FraktalButton from "@/components/fraktalButton";
+import TokenizeButton from "@/components/tokenizeButton";
 
 /**
  * LimitedInput Component
@@ -94,13 +94,13 @@ const LimitedInput = forwardRef<
                         {currency ? currency : null}
                     </Text>
                 </div>
-                <FraktalButton
+                <TokenizeButton
                     isReady={isReady}
                     onClick={onClick}
                     {...rest}
                 >
                     {children}
-                </FraktalButton>
+                </TokenizeButton>
             </div>
         );
     }

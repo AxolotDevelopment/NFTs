@@ -11,14 +11,14 @@ import {shortenHash, timezone, getParams} from '../../../utils/helpers';
 import { getSubgraphData } from '../../../utils/graphQueries';
 import { createListed } from '../../../utils/nftHelpers';
 import { useWeb3Context } from '../../../contexts/Web3Context';
-import { buyFraktions, makeOffer, claimFraktalSold } from '../../../utils/contractCalls';
+import { buyFraktions, makeOffer, claimTokenizeSold } from '../../../utils/contractCalls';
 import { useRouter } from 'next/router';
 import {EXPLORE} from "@/constants/routes";
 
 export default function FixPriceNFTView() {
   const router = useRouter();
   const {account, provider, marketAddress} = useWeb3Context();
-  const [fraktalOwners, setFraktalOwners] = useState(1);
+  const [tokenizeOwners, setTokenizeOwners] = useState(1);
   const [nftObject, setNftObject] = useState();
   const [fraktionsToBuy, setFraktionsToBuy] = useState(0);
   const [valueSetter, setValueSetter] = useState(false);
@@ -34,17 +34,17 @@ export default function FixPriceNFTView() {
       let obj = await getSubgraphData('listed_itemsId',index)
       if(obj && account){
         if(obj && obj.listItems){
-          setFraktalOwners(obj.listItems[0].fraktal.fraktions.length)
+          setTokenizeOwners(obj.listItems[0].tokenize.fraktions.length)
           let nftObjects = await createListed(obj.listItems[0])
           if(nftObjects && marketAddress){
             setNftObject(nftObjects)
           }
-          if(obj.listItems[0].fraktal.offers.length){
-            let findSold = obj.listItems[0].fraktal.status == 'sold'
+          if(obj.listItems[0].tokenize.offers.length){
+            let findSold = obj.listItems[0].tokenize.status == 'sold'
             if(findSold){
               setItemSold(true);
             }
-            let findOffer = obj.listItems[0].fraktal.offers.find(x => x.offerer.id == account.toLocaleLowerCase());
+            let findOffer = obj.listItems[0].tokenize.offers.find(x => x.offerer.id == account.toLocaleLowerCase());
             if(findOffer){
               setIsOfferer(true);
             }
@@ -101,7 +101,7 @@ export default function FixPriceNFTView() {
 
   async function claimNFT() {
     try {
-      let tx = await claimFraktalSold(nftObject.marketId, provider, contractAddress);
+      let tx = await claimTokenizeSold(nftObject.marketId, provider, contractAddress);
       if(tx){
         router.push('/my-nfts', null, {scroll: false});
       }
@@ -122,7 +122,7 @@ export default function FixPriceNFTView() {
   return (
     <VStack spacing="0" mb="12.8rem">
       <Head>
-        <title>Fraktal - NFT</title>
+        <title>Tokenize - NFT</title>
       </Head>
       <div>
         <Link href={EXPLORE}>
@@ -184,7 +184,7 @@ export default function FixPriceNFTView() {
                 }
 
                 <div>
-                  <div className={styles.auctionCardDetailsNumber}>{fraktalOwners}</div>
+                  <div className={styles.auctionCardDetailsNumber}>{tokenizeOwners}</div>
                   <div className={styles.auctionCardDetailsText}>Investors</div>
                 </div>
               </div>

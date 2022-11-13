@@ -81,7 +81,7 @@ const Search = (props) => {
                 <img
                     style={imgStyle}
                     width="48" height="48"
-                    src={'https://image.fraktal.io/?width=48&height=48&fit=cover&image=' + encodeURIComponent(values.imageURL)}/>
+                    src={'https://image.tokenize.io/?width=48&height=48&fit=cover&image=' + encodeURIComponent(values.imageURL)}/>
                 <span>{values.name}</span>
             </span>
         </button>);
@@ -176,7 +176,7 @@ const Search = (props) => {
                 getOptions={getSearchItems}
                 value={queryString}
                 search
-                placeholder="Search Fraktal"
+                placeholder="Search Tokenize"
             />
         </HStack>
     );

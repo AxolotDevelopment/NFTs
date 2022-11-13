@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <Box minH="10rem" py="2.6rem" as="header" bg={"white"}>
-      <Flex maxW="96.4rem" mx="auto" as="nav" justify="space-between">
+      <Flex maxW="95%" mx="auto" as="nav" justify="space-between">
         <HStack spacing="8">
           <NextLink href={LANDING}>
             <Link>
@@ -96,7 +96,7 @@ const Header = () => {
           </NextLink>
         
       {/*      <Link
-              href="https://docs.fraktal.io/marketplace/get-started"
+              href="https://docs.tokenize.io/marketplace/get-started"
               target="_blank"
               className="semi-16"
               borderRadius="25"

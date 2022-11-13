@@ -11,7 +11,7 @@ import {
   CLAIM_CONTRIBUTED_ETH,
   CLAIM_DEPOSITED_FRAKTIONS,
   CLAIM_NFT,
-  EXPORT_FRAKTAL,
+  EXPORT_TOKENIZE,
   PARTICIPATE_AUCTION,
   rejectContract,
   REJECT_OFFER,
@@ -25,7 +25,7 @@ import {
   CLAIMING_FRAKTIONS_PROFIT,
   CLAIMING_REVENUE,
   DEPOSIT_REVENUE,
-  IMPORT_FRAKTAL,
+  IMPORT_TOKENIZE,
   IMPORT_NFT,
   MINT_NFT,
   LISTING_NFT,
@@ -43,16 +43,16 @@ const factoryAbi = [
     'function claimERC1155(uint256 _tokenId)',
 ];
 const marketAbi = [
-    'function importFraktal(address tokenAddress, uint256 fraktionsIndex)',
+    'function importTokenize(address tokenAddress, uint256 fraktionsIndex)',
     'function rescueEth()',
     'function buyFraktions(address from, address tokenAddress, uint256 _numberOfShares) payable',
-    'function claimFraktal(address tokenAddress)',
+    'function claimTokenize(address tokenAddress)',
     'function voteOffer(address offerer, address tokenAddress)',
     'function makeOffer(address tokenAddress, uint256 _value) payable',
     'function listItem(address _tokenAddress,uint256 _price,uint256 _numberOfShares, string _name) external returns (bool)',
     'function unlistItem(address tokenAddress)',
     'function maxPriceRegistered(address) view returns (uint256)',
-    'function exportFraktal(address tokenAddress)',
+    'function exportTokenize(address tokenAddress)',
     'function rejectOffer(address from, address to, address tokenAddress) external',
     'function redeemAuctionSeller(address _tokenAddress,address _seller,uint256 _sellerNonce) external',
     'function redeemAuctionParticipant(address _tokenAddress,address _seller,uint256 _sellerNonce) external',
@@ -198,7 +198,7 @@ export async function getFraktionsIndex(provider, tokenContract) {
     let index = await customContract.fraktionsIndex();
     return index.toNumber();
   } catch {
-    return 'not Fraktal';
+    return 'not Tokenize';
   }
 }
 export async function getBalanceFraktions(account, provider, tokenContract, index) {
@@ -207,7 +207,7 @@ export async function getBalanceFraktions(account, provider, tokenContract, inde
    balanceOfId = balanceOfId.div(utils.parseEther('1'));
    return balanceOfId.toNumber();
 }
-export async function isFraktalOwner(account, provider, tokenContract) {
+export async function isTokenizeOwner(account, provider, tokenContract) {
   const customContract = new Contract(tokenContract, tokenAbi, provider);
   let isOwner = await customContract.balanceOf(account, 0);
   return isOwner.toNumber();
@@ -411,7 +411,7 @@ export async function createNFT(
   }
 }
 
-export async function importFraktal(
+export async function importTokenize(
   tokenAddress,
   fraktionsIndex,
   provider,
@@ -422,16 +422,16 @@ export async function importFraktal(
   const override = { gasLimit: 500000 };
   const customContract = new Contract(marketAddress, marketAbi, signer);
   try {
-    let tx = await customContract.importFraktal(
+    let tx = await customContract.importTokenize(
       tokenAddress,
       fraktionsIndex,
       override
     );
-    store.dispatch(callContract(IMPORT_FRAKTAL, tx, opts));
+    store.dispatch(callContract(IMPORT_TOKENIZE, tx, opts));
     let receipt = await processTx(tx);
     if (!receipt?.error) {
       store.dispatch(
-        approvedTransaction(IMPORT_FRAKTAL, tx, tokenAddress, opts)
+        approvedTransaction(IMPORT_TOKENIZE, tx, tokenAddress, opts)
       );
     }
     return receipt;
@@ -440,7 +440,7 @@ export async function importFraktal(
   }
 }
 
-export async function exportFraktal(
+export async function exportTokenize(
   tokenAddress,
   provider,
   marketAddress,
@@ -448,11 +448,11 @@ export async function exportFraktal(
 ) {
   const signer = await loadSigner(provider);
   const customContract = new Contract(marketAddress, marketAbi, signer);
-  let tx = await customContract.exportFraktal(tokenAddress);
-  store.dispatch(callContract(EXPORT_FRAKTAL, tx, opts));
+  let tx = await customContract.exportTokenize(tokenAddress);
+  store.dispatch(callContract(EXPORT_TOKENIZE, tx, opts));
   let receipt = await processTx(tx);
   if (!receipt?.error) {
-    store.dispatch(approvedTransaction(EXPORT_FRAKTAL, tx, tokenAddress, opts));
+    store.dispatch(approvedTransaction(EXPORT_TOKENIZE, tx, tokenAddress, opts));
   }
   return receipt;
 }
@@ -616,18 +616,18 @@ export async function buyFraktions(
 export async function createRevenuePayment(
   value,
   provider,
-  fraktalAddress,
+  tokenizeAddress,
   marketAddress
 ) {
   const signer = await loadSigner(provider);
   const override = { value: value, gasLimit: 700000 };
-  const customContract = new Contract(fraktalAddress, tokenAbi, signer);
+  const customContract = new Contract(tokenizeAddress, tokenAbi, signer);
   try {
     let tx = await customContract.createRevenuePayment(marketAddress, override);
     store.dispatch(callContract(DEPOSIT_REVENUE, tx));
     let receipt = await processTx(tx);
     if (!receipt?.error) {
-      store.dispatch(approvedTransaction(DEPOSIT_REVENUE, tx, fraktalAddress));
+      store.dispatch(approvedTransaction(DEPOSIT_REVENUE, tx, tokenizeAddress));
     }
     return receipt;
   } catch (e) {
@@ -635,11 +635,11 @@ export async function createRevenuePayment(
   }
 }
 
-export async function claimFraktalSold(tokenId, provider, marketAddress) {
+export async function claimTokenizeSold(tokenId, provider, marketAddress) {
   const signer = await loadSigner(provider);
   const customContract = new Contract(marketAddress, marketAbi, signer);
   try {
-    let tx = await customContract.claimFraktal(tokenId);
+    let tx = await customContract.claimTokenize(tokenId);
     store.dispatch(callContract(CLAIMING_FRAKTIONS_PROFIT, tx));
     let receipt = await processTx(tx);
     if (!receipt?.error) {

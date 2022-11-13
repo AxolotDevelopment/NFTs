@@ -40,7 +40,7 @@ const BuyOutCard = ({
   const { closeLoadingModalAfterDelay } = useLoadingScreenHandler()
 
   // functions for the offers!
-  //claim Fraktal
+  //claim Tokenize
   // console.log({offers});
 
 

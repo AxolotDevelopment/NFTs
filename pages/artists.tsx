@@ -57,17 +57,17 @@ export default function ArtistsView() {
         return x.id != factoryAddress.toLocaleLowerCase();
       });
       setArtists([...artists, ...noImporters]);
-      let fraktalSamples = noImporters.map(x => {
+      let tokenizeSamples = noImporters.map(x => {
         return x.created[0];
       }); // list the first NFT in the list of 'nfts this artist made'
-      let fraktalsSamplesObjects = await Promise.all(
-        fraktalSamples.map(x => {
+      let tokenizesSamplesObjects = await Promise.all(
+        tokenizeSamples.map(x => {
           return createObject(x);
         })
       );
       let artistObjects = getArtistsObjects(
         noImporters,
-        fraktalsSamplesObjects
+        tokenizesSamplesObjects
       );
       // make sure you're pulling new subgraph data
       let deduplicatedArtistObjects = artistObjects.filter(item => {
@@ -108,15 +108,15 @@ export default function ArtistsView() {
           return x.id != factoryAddress.toLocaleLowerCase();
         }); // why?
         setArtists(noImporters); // why?
-        let fraktalSamples = noImporters.map(x => {
+        let tokenizeSamples = noImporters.map(x => {
           return x.created[0];
         }); // list the first NFT in the list of 'nfts this artist made'
-        let fraktalsSamplesObjects = await Promise.all(
-          fraktalSamples.map(x => {
+        let tokenizesSamplesObjects = await Promise.all(
+          tokenizeSamples.map(x => {
             return createObject(x);
           })
         );
-        let artistsObj = getArtistsObjects(noImporters, fraktalsSamplesObjects);
+        let artistsObj = getArtistsObjects(noImporters, tokenizesSamplesObjects);
         if (artistsObj) {
           setArtistsItems(artistsObj);
         } else {
@@ -130,7 +130,7 @@ export default function ArtistsView() {
   return (
     <VStack spacing="0" mb="12.8rem">
       <Head>
-        <title>Fraktal - Artists</title>
+        <title>Tokenize - Artists</title>
       </Head>
       <HStack w="96.4rem" spacing="0" justifyContent="space-between" mb="4rem">
   {/*     <Box position="relative" w={"280px"}>

@@ -1,8 +1,7 @@
 import { gql, request } from "graphql-request";
 
 const APIURL =
-    process.env.NEXT_PUBLIC_GRAPHQL_URL ? process.env.NEXT_PUBLIC_GRAPHQL_URL
-        : 'https://api.studio.thegraph.com/query/21128/marketplaceperformance/0.0.4';
+    process.env.NEXT_PUBLIC_GRAPHQL_URL;
 
 const AIRDROPAPI = 'https://api.looksrare.org/graphql';
 
@@ -12,7 +11,7 @@ export const SEARCH_ITEMS = "search_items";
 
 const creator_query = gql`
   query($id: ID!) {
-    fraktalNfts(where: { creator: $id }, subgraphError: allow) {
+    tokenizeNfts(where: { creator: $id }, subgraphError: allow) {
       id
       marketId
       hash
@@ -26,9 +25,9 @@ const creator_query = gql`
 
 const fraktions_query = gql`
   query($id: ID!) {
-    listItems(first: 10, where: { fraktal: $id, amount_gt: 0 }, subgraphError: allow) {
+    listItems(first: 10, where: { tokenize: $id, amount_gt: 0 }, subgraphError: allow) {
       id
-      fraktal {
+      tokenize {
         id
       }
       price
@@ -42,7 +41,7 @@ const fraktions_query = gql`
 `;
 const owner_query = gql`
   query($id: ID!) {
-    fraktalNfts(where: { owner: $id }, subgraphError: allow) {
+    tokenizeNfts(where: { owner: $id }, subgraphError: allow) {
       id
       marketId
       hash
@@ -71,7 +70,7 @@ const owner_query = gql`
 `;
 const marketid_query = gql`
   query($id: ID!) {
-    fraktalNfts(where: { marketId: $id }, subgraphError: allow) {
+    tokenizeNfts(where: { marketId: $id }, subgraphError: allow) {
       id
       marketId
       hash
@@ -103,7 +102,7 @@ const creators_review = gql`
   query {
     users(subgraphError: allow) {
       id
-      fraktals
+      tokenizes
       created {
         id
         marketId
@@ -118,7 +117,7 @@ const creators_small_review = gql`
   query {
     users(first: 10, subgraphError: allow) {
       id
-      fraktals
+      tokenizes
       created {
         id
         marketId
@@ -150,7 +149,7 @@ const account_fraktions_query = gql`
     }
   }
 `;
-const fraktal_fraktions_query = gql`
+const tokenize_fraktions_query = gql`
   query($id: ID!) {
     fraktionsBalances(first: 10, where: { nft: $id, amount_gt: 0 }, subgraphError: allow) {
       id
@@ -170,7 +169,7 @@ const fraktal_fraktions_query = gql`
     }
   }
 `;
-// cannot get to work a fraktal filter (where:{status:"open"})
+// cannot get to work a tokenize filter (where:{status:"open"})
 
 //, orderBy:createdAt, orderDirection: desc
 const listedItems = gql`
@@ -183,7 +182,7 @@ const listedItems = gql`
       seller {
         id
       }
-      fraktal {
+      tokenize {
         id
         hash
         marketId
@@ -215,7 +214,7 @@ const listedItemsId = gql`
       seller {
         id
       }
-      fraktal {
+      tokenize {
         status
         id
         hash
@@ -245,7 +244,7 @@ const user_wallet_query = gql`
     users(where: { id: $id }, subgraphError: allow) {
       id
       balance
-      fraktals {
+      tokenizes {
         id
         hash
         marketId
@@ -283,7 +282,7 @@ const user_wallet_query = gql`
 `;
 const user_bought_query = gql`
   query($id: ID!) {
-    fraktalNfts(where: { status: "sold" }, subgraphError: allow) {
+    tokenizeNfts(where: { status: "sold" }, subgraphError: allow) {
       id
       marketId
       hash
@@ -312,7 +311,7 @@ const user_offers_query = gql`
       id
       offersMade(where: { value_gt: 0 }) {
         value
-        fraktal {
+        tokenize {
           id
           marketId
           hash
@@ -335,9 +334,9 @@ const user_offers_query = gql`
   }
 `;
 
-const fraktalOwners = gql`
+const tokenizeOwners = gql`
   query($id: ID!) {
-    fraktalNfts(where: { id: $id }, subgraphError: allow) {
+    tokenizeNfts(where: { id: $id }, subgraphError: allow) {
       fraktions {
         owner
         amount
@@ -346,9 +345,9 @@ const fraktalOwners = gql`
   }
 `;
 
-const fraktalId_query = gql`
+const tokenizeId_query = gql`
   query($id: ID!) {
-    fraktalNfts(where: { id: $id }, subgraphError: allow) {
+    tokenizeNfts(where: { id: $id }, subgraphError: allow) {
       id
       marketId
       hash
@@ -401,7 +400,7 @@ const limitedItems = gql`
       seller {
         id
       }
-      fraktal {
+      tokenize {
         id
         hash
         marketId
@@ -425,7 +424,7 @@ const limitedItems = gql`
 
 const all_nfts = gql`
   query($limit: Int!, $offset: Int!, $orderDirection: String! ) {
-    fraktalNfts(first: $limit, skip: $offset, orderBy: createdAt, orderDirection: $orderDirection, subgraphError: allow) {
+    tokenizeNfts(first: $limit, skip: $offset, orderBy: createdAt, orderDirection: $orderDirection, subgraphError: allow) {
       id
       marketId
       hash
@@ -437,9 +436,9 @@ const all_nfts = gql`
   }
 `;
 
-const listedItemsByFraktalId = gql`
+const listedItemsByTokenizeId = gql`
   query($id: ID!) {
-    listItems(where: { fraktal: $id }, subgraphError: allow) {
+    listItems(where: { tokenize: $id }, subgraphError: allow) {
       id
       name
       price
@@ -448,7 +447,7 @@ const listedItemsByFraktalId = gql`
       seller {
         id
       }
-      fraktal {
+      tokenize {
         id
         hash
         marketId
@@ -477,7 +476,7 @@ const limitedAuctions = gql`
       endTime
       sellerNonce
       participants
-      fraktal {
+      tokenize {
           id
           hash
           marketId
@@ -496,7 +495,7 @@ const limitedAuctions = gql`
 
 const searchItems = gql`
   query($name: String!, $limit: Int!, $offset: Int!) {
-    fraktalSearch(text: $name, first: $limit, skip: $offset, subgraphError: allow) {
+    tokenizeSearch(text: $name, first: $limit, skip: $offset, subgraphError: allow) {
       id
       name
       price
@@ -505,7 +504,7 @@ const searchItems = gql`
       seller {
         id
       }
-      fraktal {
+      tokenize {
         id
         hash
         marketId
@@ -527,7 +526,7 @@ const searchItems = gql`
         reservePrice
         amountOfShare
         endTime
-        fraktal {
+        tokenize {
           hash
         }
       }
@@ -539,7 +538,7 @@ const searchItems = gql`
         seller {
           id
         }
-        fraktal {
+        tokenize {
           id
           hash
           marketId
@@ -571,7 +570,7 @@ const searchItems = gql`
           status
         }
       }
-      fraktals
+      tokenizes
         created {
           id
           marketId
@@ -592,7 +591,7 @@ const searchItems = gql`
         endTime
         sellerNonce
         participants
-        fraktal {
+        tokenize {
           id
           hash
           marketId
@@ -625,9 +624,9 @@ const listedAuctions = gql`
   }
 `;
 
-const auctionFraktalNFT = gql`
+const auctionTokenizeNFT = gql`
   query($id: ID!) {
-    fraktalNft(id:$id, subgraphError: allow) {
+    tokenizeNft(id:$id, subgraphError: allow) {
       hash
       collateral {
         id
@@ -655,27 +654,27 @@ query($id: ID!) {
 `;
 const calls = [
   { name: "account_fraktions", call: account_fraktions_query },
-  { name: "marketid_fraktal", call: marketid_query },
+  { name: "marketid_tokenize", call: marketid_query },
   { name: "listed_itemsId", call: listedItemsId },
   { name: "artists", call: creators_review },
   { name: "firstArtists", call: creators_small_review },
   { name: "all", call: all_nfts },
   { name: "creator", call: creator_query },
-  { name: "manage", call: fraktal_fraktions_query },
+  { name: "manage", call: tokenize_fraktions_query },
   { name: "owned", call: owner_query },
   { name: "wallet", call: user_wallet_query },
   { name: "bought", call: user_bought_query },
   { name: "offers", call: user_offers_query },
   { name: "listed_items", call: listedItems },
   { name: LIMITED_ITEMS, call: limitedItems },
-  { name: "listed_items_by_fraktal_id", call: listedItemsByFraktalId },
-  { name: "fraktal", call: fraktalId_query },
+  { name: "listed_items_by_tokenize_id", call: listedItemsByTokenizeId },
+  { name: "tokenize", call: tokenizeId_query },
   { name: "fraktions", call: fraktions_query },
-  { name: "fraktal_owners", call: fraktalOwners },
+  { name: "tokenize_owners", call: tokenizeOwners },
   { name: LIMITED_AUCTIONS, call: limitedAuctions },
   { name: SEARCH_ITEMS, call: searchItems },
   { name: "auctions", call: listedAuctions },
-  { name: "auctionsNFT", call:auctionFraktalNFT},
+  { name: "auctionsNFT", call:auctionTokenizeNFT},
   { name: "singleAuction", call: getSingleAuction}
 ];
 

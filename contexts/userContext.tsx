@@ -23,7 +23,7 @@ import {
 } from "../utils/nftHelpers";
 
 type UserContextType = {
-  fraktals: null | any[];
+  tokenizes: null | any[];
   fraktions: null | any[];
   nfts: null | any[];
   balance: number;
@@ -31,7 +31,7 @@ type UserContextType = {
 export const UserContext = createContext(null);
 
 export const UserContextProviderFC = ({ children }) => {
-  const [fraktals, setFraktals] = useState(null);
+  const [tokenizes, setTokenizes] = useState(null);
   const [fraktions, setFraktions] = useState(null);
   const [nfts, setNFTs] = useState(null);
   const [walletAssets, setWalletAssets] = useState(null);
@@ -46,15 +46,15 @@ export const UserContextProviderFC = ({ children }) => {
   }, [account]);
 
   useEffect(() => {
-    if (window && fraktals?.length > 0) {
+    if (window && tokenizes?.length > 0) {
       const mintingNFTsString = window?.localStorage.getItem('mintingNFTs');
-      fraktals?.forEach((fraktal) => {
-        if (fraktal?.id === mintingNFTsString) {
+      tokenizes?.forEach((tokenize) => {
+        if (tokenize?.id === mintingNFTsString) {
           window?.localStorage.removeItem('mintingNFTs');
         }
       });
     }
-  }, [fraktals]);
+  }, [tokenizes]);
 
   const fetchNFTs = useCallback(
     // if user not in subgraph, fails to complete and show other nfts !!
@@ -68,7 +68,7 @@ export const UserContextProviderFC = ({ children }) => {
         let fraktionsObjects;
         let fraktionsObjectsClean;
         let userBalanceFormatted;
-        let fraktalsClean: null | any[];
+        let tokenizesClean: null | any[];
         let totalAddresses: null | string[];
         let nftObjectsClean;
 
@@ -103,22 +103,22 @@ export const UserContextProviderFC = ({ children }) => {
               return x != null;
             });
           }
-          // Fraktals retrieval
-          let userFraktalsFetched = fobjects.users[0].fraktals;
+          // Tokenizes retrieval
+          let userTokenizesFetched = fobjects.users[0].tokenizes;
 
-          let userFraktalObjects = await Promise.all(
-            userFraktalsFetched.map(x => {
+          let userTokenizeObjects = await Promise.all(
+            userTokenizesFetched.map(x => {
               return createObject(x);
             })
           );
 
-          if (userFraktalObjects) {
-            fraktalsClean = userFraktalObjects.filter(x => {
+          if (userTokenizeObjects) {
+            tokenizesClean = userTokenizeObjects.filter(x => {
               return x != null && x.imageURL;
             });
           }
 
-          let userFraktalAddresses = fraktalsClean.map(x => {
+          let userTokenizeAddresses = tokenizesClean.map(x => {
             return x.id;
           });
 
@@ -126,7 +126,7 @@ export const UserContextProviderFC = ({ children }) => {
             return x.id;
           });
 
-          totalAddresses = userFraktalAddresses.concat(userFraktionsAddreses);
+          totalAddresses = userTokenizeAddresses.concat(userFraktionsAddreses);
         }
 
         if (
@@ -146,7 +146,7 @@ export const UserContextProviderFC = ({ children }) => {
           });
 
           totalNFTs = nftsERC721_wallet.concat(nftsERC1155_wallet);
-          if (!fobjects || !fobjects.users[0] || !fobjects.users[0].fraktals) {
+          if (!fobjects || !fobjects.users[0] || !fobjects.users[0].tokenizes) {
             totalAddresses = [];
           }
 
@@ -171,7 +171,7 @@ export const UserContextProviderFC = ({ children }) => {
             nftObjectsClean = nftObjects;
           }
 
-          setFraktals(fraktalsClean);
+          setTokenizes(tokenizesClean);
           setFraktions(fraktionsObjectsClean);
           setNFTs(nftObjectsClean);
           setBalance(userBalanceFormatted);
@@ -188,7 +188,7 @@ export const UserContextProviderFC = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ fraktals, fraktions, nfts, balance, loading, fetchNFTs, walletAssets }}
+      value={{ tokenizes, fraktions, nfts, balance, loading, fetchNFTs, walletAssets }}
     >
       {children}
     </UserContext.Provider>
@@ -196,11 +196,11 @@ export const UserContextProviderFC = ({ children }) => {
 };
 
 export const useUserContext = () => {
-  const { fraktals, fraktions, nfts, balance, loading, fetchNFTs, walletAssets } = useContext(
+  const { tokenizes, fraktions, nfts, balance, loading, fetchNFTs, walletAssets } = useContext(
     UserContext
   );
   return {
-    fraktals,
+    tokenizes,
     fraktions,
     nfts,
     balance,

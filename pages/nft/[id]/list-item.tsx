@@ -77,7 +77,7 @@ export default function ListNFTView() {
   const [isAuction, setIsAuction] = useState(false);
   const [isListing, setIsListing] = useState<boolean>(false);
 
-  const fraktalReady = fraktions > 0
+  const tokenizeReady = fraktions > 0
     && totalAmount > 0
     && totalAmount <= parseFloat(fraktions)
     && totalPrice > 0
@@ -124,7 +124,7 @@ export default function ListNFTView() {
           setLocked(true)
           setTransferred(true)
           setUnlocked(true)
-          // let ownedFraktions = listing.listItems[0].fraktal.fraktions.find(x=> x.owner.id === account.toLocaleLowerCase())
+          // let ownedFraktions = listing.listItems[0].tokenize.fraktions.find(x=> x.owner.id === account.toLocaleLowerCase())
           // setFraktions(ownedFraktions.amount)
           let nftObject = await createListed(listing.listItems[0])
           if(nftObject && account){
@@ -138,9 +138,9 @@ export default function ListNFTView() {
             }
           // nftObject gets 2 different inputs (id is different for listed items)
           } else {
-            let obj = await getSubgraphData('marketid_fraktal', args[2])
-            if(obj && obj.fraktalNfts) {
-              let nftObjects = await createObject(obj.fraktalNfts[0])
+            let obj = await getSubgraphData('marketid_tokenize', args[2])
+            if(obj && obj.tokenizeNfts) {
+              let nftObjects = await createObject(obj.tokenizeNfts[0])
               if(nftObjects && account ){
                 setNftObject(nftObjects);
                 const fraktionIndex = await getFraktionsIndex(provider, nftObjects.id);
@@ -245,7 +245,7 @@ export default function ListNFTView() {
   return (
     <VStack spacing="0" mb="12.8rem">
       <Head>
-        <title>Fraktal - NFT</title>
+        <title>Tokenize - NFT</title>
       </Head>
       <div>
         <Link href={EXPLORE}>
@@ -382,7 +382,7 @@ export default function ListNFTView() {
                     }
                     <br />
                     <FrakButton
-                    disabled={!fraktalReady}
+                    disabled={!tokenizeReady}
                     style={{marginTop: '32px'}}
                     onClick={listNewItem}
                     >
@@ -465,7 +465,7 @@ export default function ListNFTView() {
                     }
                     <br />
                     <FrakButton
-                    disabled={!fraktalReady}
+                    disabled={!tokenizeReady}
                     style={{marginTop: '32px'}}
                     onClick={listNewItem}
                     >

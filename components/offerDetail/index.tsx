@@ -4,7 +4,7 @@ import {
   voteOffer,
   getLocked,
   unlockShares,
-  claimFraktalSold,
+  claimTokenizeSold,
   // lockShares,
   getApproved,
   approveMarket,
@@ -130,16 +130,16 @@ export default function OfferDetail({
    * Claiming
    * @returns {Promise<void>}
    */
-  async function claimFraktal() {
+  async function claimTokenize() {
     // this one goes to offersCard
     try {
-      let response = await claimFraktalSold(
+      let response = await claimTokenizeSold(
         tokenAddress,
         provider,
         marketAddress
       ).catch((error) => {
         store.dispatch(
-          rejectContract(CLAIMING_FRAKTIONS_PROFIT, error, claimFraktal)
+          rejectContract(CLAIMING_FRAKTIONS_PROFIT, error, claimTokenize)
         );
       }).then(res => closeLoadingModalAfterDelay());
     } catch (e) {
@@ -267,7 +267,7 @@ export default function OfferDetail({
                   borderRadius: `24px`,
                 }}
                 _hover={{ cursor: `pointer` }}
-                onClick={() => claimFraktal()}
+                onClick={() => claimTokenize()}
               >
                 Claim
               </Box>

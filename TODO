@@ -13,7 +13,7 @@ BUGS:
   AUDITORY:
   ------------------------------------------------------------------------------------------------
   REMEMBER CHECK EFFECT INTERACTIONS PATTERN :D
-  FraktalMarket:
+  TokenizeMarket:
   - Replace transfer() for AddressUpgradeable.sendValue() in:
     -withdrawAccruedFees()
     -rescueEth()
@@ -24,7 +24,7 @@ BUGS:
   - setFee() does not check max value (10000 = 100%)
   - setFee() uses >= 0 for a uint16 (never negative)
 
-  FraktalMarket, FraktalNFT, PaymentSplitterUpgradeable > check only externally called functions.
+  TokenizeMarket, TokenizeNFT, PaymentSplitterUpgradeable > check only externally called functions.
       -external> public visibility
 
   This is just a formal revision of patterns. Not an analysis of the program.

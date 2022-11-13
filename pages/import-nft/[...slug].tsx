@@ -53,7 +53,7 @@ import { useWeb3Context } from '@/contexts/Web3Context';
  */
 import {
     APPROVE_TOKEN,
-    IMPORT_FRAKTAL,
+    IMPORT_TOKENIZE,
     IMPORT_NFT,
     LISTING_NFT,
     rejectContract,
@@ -71,7 +71,7 @@ import {
     getIndexUsed,
     importERC1155,
     importERC721,
-    importFraktal,
+    importTokenize,
     listItem,
     listItemAuction,
 } from '@/utils/contractCalls';
@@ -91,7 +91,7 @@ const actionOpts = { workflow: Workflow.IMPORT_NFT };
 function ImportNFTPage() {
     const router = useRouter();
     const { account, provider, factoryAddress, marketAddress } = useWeb3Context();
-  //  const { fraktals, fraktions, nfts, balance } = useUserContext();
+  //  const { tokenizes, fraktions, nfts, balance } = useUserContext();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [noNFTs, setNoNFTs] = useState<boolean>(false);
@@ -149,7 +149,7 @@ function ImportNFTPage() {
         )
             .then((receipt) => {
                 setIsMarketApproved(true);
-                importFraktalToMarket();
+                importTokenizeToMarket();
             })
             .catch((error) => {
                 store.dispatch(
@@ -217,9 +217,9 @@ function ImportNFTPage() {
     }, [isNFTImported, tokenMintedAddress]);
 
     /**
-     * Import Fraktal to Market
+     * Import Tokenize to Market
      */
-    async function importFraktalToMarket() {
+    async function importTokenizeToMarket() {
         let tokenID = 0;
         let isUsed = true;
         // todo: add spinner
@@ -230,7 +230,7 @@ function ImportNFTPage() {
         }
 
         if (isUsed == false) {
-            const response = await importFraktal(
+            const response = await importTokenize(
                 tokenMintedAddress,
                 tokenID,
                 provider,
@@ -244,9 +244,9 @@ function ImportNFTPage() {
                 .catch((error) => {
                     store.dispatch(
                         rejectContract(
-                            IMPORT_FRAKTAL,
+                            IMPORT_TOKENIZE,
                             error,
-                            importFraktalToMarket,
+                            importTokenizeToMarket,
                             actionOpts
                         )
                     );
@@ -264,7 +264,7 @@ function ImportNFTPage() {
         const response = await listItem(
             tokenMintedAddress,
             fei, // amount of fraktions to list
-            weiPerFrak, // price per fraktal
+            weiPerFrak, // price per tokenize
             provider,
             marketAddress,
             NFTName,
@@ -586,7 +586,7 @@ function ImportNFTPage() {
                                 <FrakButton4
                                     status={!isFraktionsAllowed ? 'open' : 'done'}
                                     onClick={() => {
-                                        importFraktalToMarket();
+                                        importTokenizeToMarket();
                                     }}
                                 >
                                     4. Transfer Fraktions

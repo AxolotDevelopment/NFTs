@@ -22,7 +22,7 @@ import { utils } from 'ethers';
 import {
   createNFT,
   approveMarket,
-  importFraktal,
+  importTokenize,
   getIndexUsed,
   listItem,
   listItemAuction,
@@ -40,7 +40,7 @@ import {
   approvedTransaction,
   APPROVE_TOKEN,
   MINT_NFT,
-  IMPORT_FRAKTAL,
+  IMPORT_TOKENIZE,
   rejectContract,
   closeModal,
 } from '../redux/actions/contractActions';
@@ -192,7 +192,7 @@ const MintPage = (props) => {
   };
 
   // FUNCTIONS FOR LISTING
-  const fraktalReady =
+  const tokenizeReady =
     minted &&
     totalAmount > 0 &&
     totalAmount <= MAX_FRAKTIONS &&
@@ -204,14 +204,14 @@ const MintPage = (props) => {
     await approveMarket(marketAddress, provider, tokenMintedAddress, actionOpts)
       .then(() => {
         setIsApproved(true);
-        importFraktalToMarket();
+        importTokenizeToMarket();
       })
       .catch((error) => {
         tokenRejected(error, approveToken);
       });
   }
 
-  async function importFraktalToMarket() {
+  async function importTokenizeToMarket() {
     let index = 0;
     let isUsed = true;
     while (isUsed == true) {
@@ -219,7 +219,7 @@ const MintPage = (props) => {
       isUsed = await getIndexUsed(index, provider, tokenMintedAddress);
     }
     if (isUsed == false) {
-      await importFraktal(
+      await importTokenize(
         tokenMintedAddress,
         index,
         provider,
@@ -235,7 +235,7 @@ const MintPage = (props) => {
           }
         })
         .catch((error) => {
-          transferRejected(error, importFraktalToMarket);
+          transferRejected(error, importTokenizeToMarket);
         });
     }
   }
@@ -515,13 +515,13 @@ const MintPage = (props) => {
                 <FrakButton4
                   status={!fraktionalized ? 'open' : 'done'}
                   disabled={!isApproved || !tokenMintedAddress}
-                  onClick={() => importFraktalToMarket()}
+                  onClick={() => importTokenizeToMarket()}
                 >
                   3. Frak It
                 </FrakButton4>
                 <FrakButton4
                   status={!listed ? 'open' : 'done'}
-                  disabled={!fraktalReady}
+                  disabled={!tokenizeReady}
                   onClick={() => {
                     if (isAuction) {
                       listNewAuctionItem();
@@ -576,7 +576,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     transferRejected: (obj, buttonAction) => {
       dispatch(
-        rejectContract(IMPORT_FRAKTAL, obj, buttonAction, {
+        rejectContract(IMPORT_TOKENIZE, obj, buttonAction, {
           workflow: Workflow.MINT_NFT,
         })
       );

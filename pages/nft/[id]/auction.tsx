@@ -146,17 +146,17 @@ function AuctionNFTView({router}) {
 
       let _hash = await getSubgraphAuction("auctionsNFT", obj.auction.tokenAddress);
       Object.assign(obj.auction,{
-        "hash":_hash.fraktalNft.hash,
+        "hash":_hash.tokenizeNft.hash,
       });
 
       const item = await createListedAuction(obj.auction);
       console.log('Item', item)
       Object.assign(obj.auction,{
-        "hash":_hash.fraktalNft.hash,
+        "hash":_hash.tokenizeNft.hash,
         "name":item.name,
         "imageURL":item.imageURL,
         "seller": item.seller,
-        "collateral": _hash.fraktalNft.collateral,
+        "collateral": _hash.tokenizeNft.collateral,
         "metadata": item.metadata
       });
 
@@ -234,7 +234,7 @@ function AuctionNFTView({router}) {
   return (
     <VStack spacing="0" mb="12.8rem">
       <Head>
-        <title>Fraktal - NFT</title>
+        <title>Tokenize - NFT</title>
       </Head>
       <div>
         <Link href={EXPLORE}>

@@ -24,7 +24,7 @@ import { useWeb3Context } from '../contexts/Web3Context';
 import { useUserContext } from '../contexts/userContext';
 import { useMintingContext } from '@/contexts/NFTIsMintingContext';
 import {
-  importFraktal,
+  importTokenize,
   approveMarket,
   importERC721,
   importERC1155,
@@ -60,7 +60,7 @@ export default function MyNFTsView() {
   const { isMinting, setIsMinting } = useMintingContext();
   const { closeLoadingModalAfterDelay } = useLoadingScreenHandler()
   const { account, provider, factoryAddress, marketAddress } = useWeb3Context();
-  const { fraktals, fraktions, nfts, balance, loading } = useUserContext();
+  const { tokenizes, fraktions, nfts, balance, loading } = useUserContext();
 
   const refreshPage = () => {
     setRefresh(!refresh);
@@ -221,10 +221,10 @@ export default function MyNFTsView() {
         auctionData?.map(async (x) => {
           let _hash = await getSubgraphAuction('auctionsNFT', x.tokenAddress);
 
-          if (_hash.fraktalNft != null) {
+          if (_hash.tokenizeNft != null) {
             const itm = {
               id: `${x.tokenAddress}-${x.sellerNonce}`,
-              hash: _hash.fraktalNft.hash,
+              hash: _hash.tokenizeNft.hash,
             };
             auctionDataHash.push(itm);
           }
@@ -252,10 +252,10 @@ export default function MyNFTsView() {
         auctionDataParticipated?.map(async (x) => {
           let _hash = await getSubgraphAuction('auctionsNFT', x.tokenAddress);
 
-          if (_hash.fraktalNft != null) {
+          if (_hash.tokenizeNft != null) {
             const itm = {
               id: `${x.tokenAddress}-${x.sellerNonce}`,
-              hash: _hash.fraktalNft.hash,
+              hash: _hash.tokenizeNft.hash,
             };
             auctionDataParticipatedHash.push(itm);
           }
@@ -344,7 +344,7 @@ export default function MyNFTsView() {
     let nftLocalDataString = window?.localStorage.getItem('mintingNFTs');
     let nftLocalData = JSON.parse(nftLocalDataString);
     nftLocalData?.forEach((address, index) => {
-      fraktals?.forEach((frak) => {
+      tokenizes?.forEach((frak) => {
         if (address.toLocaleLowerCase() === frak.id) {
           nftLocalData.splice(index, 1);
         }
@@ -352,7 +352,7 @@ export default function MyNFTsView() {
     });
     nftLocalDataString = JSON.stringify(nftLocalData);
     window?.localStorage.setItem('mintingNFTs', nftLocalDataString);
-  }, [fraktals]);
+  }, [tokenizes]);
 
   useEffect(() => {
     if (window) {
@@ -413,7 +413,7 @@ export default function MyNFTsView() {
       router.reload();
     }
   }
-  async function importFraktalToMarket(item) {
+  async function importTokenizeToMarket(item) {
     let res;
     let done;
     let approved = await getApproved(account, marketAddress, provider, item.id);
@@ -424,7 +424,7 @@ export default function MyNFTsView() {
     }
     // overflow problem with opensea assets.. subid toooo big
     if (done) {
-      res = await importFraktal(item.id, 1, provider, marketAddress); // change 1 to fraktionsIndex.. should be changeable
+      res = await importTokenize(item.id, 1, provider, marketAddress); // change 1 to fraktionsIndex.. should be changeable
     }
     if (done && res) {
       router.reload();
@@ -434,11 +434,11 @@ export default function MyNFTsView() {
   return (
     <VStack width="96.4rem">
       <Head>
-        <title>Fraktal - My NFTs</title>
+        <title>Tokenize - My NFTs</title>
       </Head>
 
       <Flex w="100%">
-        <Box className={styles.header}>Your Fraktal NFTs</Box>
+        <Box className={styles.header}>Your Tokenize NFTs</Box>
         <Spacer />
         <Box>
           <NextLink href={`/list-nft`}>
@@ -448,7 +448,7 @@ export default function MyNFTsView() {
           </NextLink>
         </Box>
       </Flex>
-      {!loading && fraktals?.length > 0 && (
+      {!loading && tokenizes?.length > 0 && (
         <Grid
           mt="40px !important"
           ml="0"
@@ -458,7 +458,7 @@ export default function MyNFTsView() {
           templateColumns="repeat(3, 1fr)"
           gap="3.2rem"
         >
-          {fraktals.map((item) => (
+          {tokenizes.map((item) => (
             <div key={item.id + '-' + item.tokenId}>
               <NextLink key={item.id} href={`/nft/${item.id}/details`}>
                 <NFTItem
@@ -473,7 +473,7 @@ export default function MyNFTsView() {
           ))}
         </Grid>
       )}
-      {!loading && fraktals?.length <= 0 && isMinting && (
+      {!loading && tokenizes?.length <= 0 && isMinting && (
         <Grid
           mt="40px !important"
           ml="0"
@@ -486,7 +486,7 @@ export default function MyNFTsView() {
           <Image src="/nft-loading-card.svg" alt="NFTLoading" />
         </Grid>
       )}
-      {!loading && !isMinting && fraktals?.length <= 0 && (
+      {!loading && !isMinting && tokenizes?.length <= 0 && (
         <Center height="104px" width="100%" borderRadius="24" bgColor="#F9F9F9">
           <Text>
             You do not have any NFTs.{' '}
@@ -699,7 +699,7 @@ export default function MyNFTsView() {
                 <NFTItemOS
                   item={item}
                   CTAText={'Import to market'}
-                  onClick={() => importFraktalToMarket(item)}
+                  onClick={() => importTokenizeToMarket(item)}
                 />
               ) : (
                 <NFTItemOS

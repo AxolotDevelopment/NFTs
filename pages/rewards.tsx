@@ -25,7 +25,7 @@ import {
     Text
 } from '@chakra-ui/react'
 /**
- * FRAKTAL Components
+ * TOKENIZE Components
  */
 import FrakButton from "@/components/button";
 import FrakButton2 from "@/components/button2";
@@ -57,7 +57,7 @@ import {utils} from 'ethers';
  */
 const RewardsPage = () => {
     const router = useRouter();
-    const { account, provider, lpStakingAddress, tradingRewardsAddress, feeSharingAddress, fraktalTokenAddress, lpTokenAddress, loading} = useWeb3Context();
+    const { account, provider, lpStakingAddress, tradingRewardsAddress, feeSharingAddress, tokenizeTokenAddress, lpTokenAddress, loading} = useWeb3Context();
 
     const [frakBalance,setFrakBalance] = useState("0");
     const [stakedFrak,setStakedFrak] = useState("0");
@@ -78,7 +78,7 @@ const RewardsPage = () => {
     useEffect(() => {
         async function getData(){
             if(!loading && account ){
-                const balance = (await erc20BalanceOf(account,provider,fraktalTokenAddress));
+                const balance = (await erc20BalanceOf(account,provider,tokenizeTokenAddress));
                 const _feeSharingUserInfo = await feeSharingUserInfo(account,provider,feeSharingAddress);
                 const _stakedFrak = utils.formatEther(_feeSharingUserInfo[0]);
                 const _unclaimedFrakStaking = utils.formatEther(await feeSharingCalculatePendingRewards(account,provider,feeSharingAddress));
@@ -113,11 +113,11 @@ const RewardsPage = () => {
         <VStack spacing={55}>
             <VStack spacing={5}>
                 <Box>
-                    <h2 className="fraktalHeading">Total FRAK in Wallet</h2>
+                    <h2 className="tokenizeHeading">Total FRAK in Wallet</h2>
                 </Box>
                 <Box>
                     <HStack spacing={10} divider={<StackDivider borderColor='#9F66E3' />}>
-                        <Box><Text className="fraktalTotal">{frakBalance} FRAK</Text></Box>
+                        <Box><Text className="tokenizeTotal">{frakBalance} FRAK</Text></Box>
                         <Box>
                             <a href={"https://app.uniswap.org/#/swap?outputCurrency=0x1f81f8f262714cc932141c7C79495B481eF27258&chain=mainnet"} target="_blank">
                                 <FrakButton px="50px">Buy Frak</FrakButton>
@@ -130,7 +130,7 @@ const RewardsPage = () => {
                 <Stack direction={['column', 'row']} spacing={30}>
                     <Staking totalStaked={stakedFrak} unclaimedRewards={unclaimedFrakStaking}
                     provider={provider} feeSharingAddress={feeSharingAddress}
-                    account={account} fraktalTokenAddress={fraktalTokenAddress}
+                    account={account} tokenizeTokenAddress={tokenizeTokenAddress}
                     />
                     <Trading unclaimedRewards={unclaimedTradingRewards} nextDistribution={tomorrow}
                     provider={provider} account={account} tradingRewardsAddress={tradingRewardsAddress}
@@ -145,7 +145,7 @@ const RewardsPage = () => {
                 </Stack>
             </Box>
             <Box>
-                <a href={"https://docs.fraktal.io/fraktal-governance-token-frak/staking-frak"} target="_blank">
+                <a href={"https://docs.tokenize.io/tokenize-governance-token-frak/staking-frak"} target="_blank">
                     <FrakButton
                         color="#000"
                         border="2px solid #000"
@@ -159,7 +159,7 @@ const RewardsPage = () => {
 };
 
 const StakePanels = ({totalStaked, currency, provider, account,
-    feeSharingAddress, fraktalTokenAddress,
+    feeSharingAddress, tokenizeTokenAddress,
     lpStakingAddress, lpTokenAddress
 }) => {
     const [isReadyToStake, setStakeIsReady] = useState(false);
@@ -170,9 +170,9 @@ const StakePanels = ({totalStaked, currency, provider, account,
     const stake = async () => {
         //TODO - Add Stake contract method
         if(currency==="FRAK"){
-            const allowance = await erc20Allowance(account,feeSharingAddress, provider, fraktalTokenAddress);
+            const allowance = await erc20Allowance(account,feeSharingAddress, provider, tokenizeTokenAddress);
             if(allowance==0){
-                await erc20Approve(feeSharingAddress,provider,fraktalTokenAddress);
+                await erc20Approve(feeSharingAddress,provider,tokenizeTokenAddress);
             }
             const formattedAmount = utils.parseEther(stakeAmount.toString());
             await feeSharingDeposit(formattedAmount.toString(),false,provider,feeSharingAddress);
@@ -250,7 +250,7 @@ const StakePanels = ({totalStaked, currency, provider, account,
  * @returns {any}
  * @constructor
  */
-const Staking = ({totalStaked, unclaimedRewards, provider, feeSharingAddress, account, fraktalTokenAddress}) => {
+const Staking = ({totalStaked, unclaimedRewards, provider, feeSharingAddress, account, tokenizeTokenAddress}) => {
     const currency = 'FRAK';
     return (
         <TabsCard
@@ -258,7 +258,7 @@ const Staking = ({totalStaked, unclaimedRewards, provider, feeSharingAddress, ac
             title="Staking">
             <StakePanels  totalStaked={totalStaked} currency={currency}
             account={account} provider={provider} feeSharingAddress={feeSharingAddress}
-            fraktalTokenAddress={fraktalTokenAddress}
+            tokenizeTokenAddress={tokenizeTokenAddress}
             lpStakingAddress={""} lpTokenAddress={""}
             />
             <VStack className={styles.stackedContainer} spacing={10} divider={<StackDivider borderColor='#E0E0E0' />}>
@@ -346,7 +346,7 @@ const LiquidityPool = ({totalStaked, unclaimedRewards, account, provider, lpStak
             currency={currency}
             title="LP">
             <StakePanels totalStaked={totalStaked} currency={currency}
-            account={account} provider={provider} fraktalTokenAddress={""} feeSharingAddress={""}
+            account={account} provider={provider} tokenizeTokenAddress={""} feeSharingAddress={""}
             lpStakingAddress={lpStakingAddress} lpTokenAddress={lpTokenAddress}
             />
             <VStack className={styles.stackedContainer} spacing={10} divider={<StackDivider borderColor='#E0E0E0' />}>

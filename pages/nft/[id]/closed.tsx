@@ -17,9 +17,9 @@ export default function ClosedNFTView() {
   useEffect(async ()=>{
     const address = getParams('nft');
     const index = parseFloat(address.split('/closed')[0])
-    let obj = await getSubgraphData('marketid_fraktal',index)
-    if(obj && obj.fraktalNfts){
-      let nftObjects = await createObject(obj.fraktalNfts[0])
+    let obj = await getSubgraphData('marketid_tokenize',index)
+    if(obj && obj.tokenizeNfts){
+      let nftObjects = await createObject(obj.tokenizeNfts[0])
       if(nftObjects){
         setNftObject(nftObjects)
       }
@@ -43,7 +43,7 @@ export default function ClosedNFTView() {
   return (
     <VStack spacing="0" mb="12.8rem">
       <Head>
-        <title>Fraktal - NFT</title>
+        <title>Tokenize - NFT</title>
       </Head>
       <div>
         <Link href={EXPLORE}>

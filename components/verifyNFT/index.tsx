@@ -54,7 +54,7 @@ const VerifyNFT =(({nftObject}) => {
         }
         setIsValidating(false);
         if (response === undefined || response.success === false) {
-            setMessage("NFT was minted on Fraktal");
+            setMessage("NFT was minted on Tokenize");
             setOpenModal(true);
         } else if (response.permalink !== undefined) {
             setOpeaSeaURL(response.permalink);

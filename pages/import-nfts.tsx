@@ -45,7 +45,7 @@ const MyNFTWallet = () => {
        let nftsERC1155Wallet;
        let fraktionsObjects;
        let fraktionsObjectsClean;
-       let fraktalsClean: null | any[];
+       let tokenizesClean: null | any[];
        let totalAddresses: null | string[];
        let nftObjectsClean;
 
@@ -82,22 +82,22 @@ const MyNFTWallet = () => {
                    return x != null;
                });
            }
-           // Fraktals retrieval
-           let userFraktalsFetched = fobjects.users[0].fraktals;
+           // Tokenizes retrieval
+           let userTokenizesFetched = fobjects.users[0].tokenizes;
 
-           let userFraktalObjects = await Promise.all(
-               userFraktalsFetched.map(x => {
+           let userTokenizeObjects = await Promise.all(
+               userTokenizesFetched.map(x => {
                    return createObject(x.nft);
                })
            );
 
-           if (userFraktalObjects) {
-               fraktalsClean = userFraktalObjects.filter(x => {
+           if (userTokenizeObjects) {
+               tokenizesClean = userTokenizeObjects.filter(x => {
                    return x != null && x.imageURL.length && x.status != "retrieved";
                });
            }
 
-           let userFraktalAddresses = fraktalsClean.map(x => {
+           let userTokenizeAddresses = tokenizesClean.map(x => {
                return x.id;
            });
 
@@ -105,7 +105,7 @@ const MyNFTWallet = () => {
                return x.id;
            });
 
-           totalAddresses = userFraktalAddresses.concat(userFraktionsAddreses);
+           totalAddresses = userTokenizeAddresses.concat(userFraktionsAddreses);
        }
 
        if (
@@ -125,7 +125,7 @@ const MyNFTWallet = () => {
            });
 
            totalNFTs = nftsERC721Wallet.concat(nftsERC1155Wallet);
-           if (!fobjects || !fobjects.users[0] || !fobjects.users[0].fraktals) {
+           if (!fobjects || !fobjects.users[0] || !fobjects.users[0].tokenizes) {
                totalAddresses = [];
            }
 

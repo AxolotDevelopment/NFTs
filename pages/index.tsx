@@ -35,7 +35,7 @@ import { createListed } from "@/utils/nftHelpers";
  */
 import {getSubgraphData} from "@/utils/graphQueries";
 /**
- * FRAKTAL Components
+ * TOKENIZE Components
  */
 import NFTItem from "@/components/nft-item";
 import FrakButton from "@/components/button"
@@ -66,7 +66,7 @@ const LandingPage = () => {
     };
 
     const getMostPopular = (items) => {
-        return items.sort((a, b) => (a.fraktal.fraktions.length > b.fraktal.fraktions.length ? -1 : 1));
+        return items.sort((a, b) => (a.tokenize.fraktions.length > b.tokenize.fraktions.length ? -1 : 1));
     };
 
     useEffect(()=>{

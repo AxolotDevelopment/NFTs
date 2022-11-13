@@ -48,7 +48,7 @@ export default function ArtistView() {
           setArtistAddres(address);
           let objects = await getSubgraphData("creator", address);
           await Promise.all(
-            objects.fraktalNfts.map(x => {
+            objects.tokenizeNfts.map(x => {
               return createObject(x);
             })
           ).then(results => setNftItems(results));
@@ -67,7 +67,7 @@ export default function ArtistView() {
   return (
     <VStack spacing="0" mb="1rem" sx={{ alignItems: `start` }}>
       <Head>
-        <title>Fraktal - Artist</title>
+        <title>Tokenize - Artist</title>
       </Head>
       <Heading sx={{ fontSize: `36px`, marginBottom: `1rem` }}>
         {artistAddress}
