@@ -14,7 +14,7 @@ import Web3ContextProvider from "@/contexts/Web3Context"
 import { UserContextProviderFC } from "@/contexts/userContext";
 import { MintingFC } from "@/contexts/NFTIsMintingContext";
 /**
- * App Fraktal Components
+ * App Tokenize Components
  */
 import Layout from "../components/layout";
 import Footer from "../components/footer";

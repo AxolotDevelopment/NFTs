@@ -18,15 +18,15 @@ const infuraConfig = {
   ...infuraAuth
 };
 
-async function getFraktalData(address) {
-  let data = await getSubgraphData('fraktal', address);
-  if (data?.fraktalNfts?.length) {
+async function getTokenizeData(address) {
+  let data = await getSubgraphData('tokenize', address);
+  if (data?.tokenizeNfts?.length) {
     return {
-      fraktalId: data.fraktalNfts[0].marketId,
-      collateral: data.fraktalNfts[0].collateral,
+      tokenizeId: data.tokenizeNfts[0].marketId,
+      collateral: data.tokenizeNfts[0].collateral,
     };
   } else {
-    return { fraktalId: null, collateral: null };
+    return { tokenizeId: null, collateral: null };
   }
 }
 
@@ -45,13 +45,13 @@ export async function createOpenSeaObject(data) {
       collateral: null,
       collateralType: null,
     };
-    let fraktalData = await getFraktalData(data.asset_contract.address);
-    if (fraktalData?.fraktalId?.length) {
-      response.marketId = fraktalData.fraktalId;
+    let tokenizeData = await getTokenizeData(data.asset_contract.address);
+    if (tokenizeData?.tokenizeId?.length) {
+      response.marketId = tokenizeData.tokenizeId;
     }
-    if (fraktalData.collateral) {
-      response.collateral = fraktalData.collateral.id;
-      response.collateralType = fraktalData.collateral.type;
+    if (tokenizeData.collateral) {
+      response.collateral = tokenizeData.collateral.id;
+      response.collateralType = tokenizeData.collateral.type;
     }
     return response;
   } catch (e) {
@@ -111,17 +111,17 @@ const getImageUrl = (nftMetadata) => {
 
 export async function createListed(data) {
   try {
-    const tokenId = (data.fraktal.collateral !== null && data.fraktal.collateral !== undefined) ? data.fraktal.collateral.tokenId : "1";
-    const nftMetadata = await getNftMetadata(data.fraktal.id, tokenId);
+    const tokenId = (data.tokenize.collateral !== null && data.tokenize.collateral !== undefined) ? data.tokenize.collateral.tokenId : "1";
+    const nftMetadata = await getNftMetadata(data.tokenize.id, tokenId);
 
     if (nftMetadata) {
       return {
-        link: `/nft/${data.fraktal.id}/details`,
-        creator: data.fraktal.creator.id,
-        marketId: data.fraktal.marketId,
-        createdAt: data.fraktal.createdAt,
-        tokenAddress: data.fraktal.id,
-        holders: data.fraktal.fraktions.length,
+        link: `/nft/${data.tokenize.id}/details`,
+        creator: data.tokenize.creator.id,
+        marketId: data.tokenize.marketId,
+        createdAt: data.tokenize.createdAt,
+        tokenAddress: data.tokenize.id,
+        holders: data.tokenize.fraktions.length,
         raised: data.gains,
         id: data.id,
         price: utils.formatEther(data.price),
@@ -176,7 +176,7 @@ async function mapFixedPrice(data) {
   let dataOnSale;
   if (data?.listItems?.length !== undefined) {
     dataOnSale = data?.listItems?.filter(x => {
-      return x.fraktal.status == "open";
+      return x.tokenize.status == "open";
     });
   }
 
@@ -192,18 +192,18 @@ async function mapFixedPrice(data) {
 }
 
 /**
- * Map Auction To Fraktal
+ * Map Auction To Tokenize
  * @param auctionData
  * @returns {Promise<any[]>}
  */
-async function mapAuctionToFraktal(auctionData) {
+async function mapAuctionToTokenize(auctionData) {
   let auctionDataHash = [];
   await Promise.all(auctionData?.auctions.map(async x => {
     let _hash = await getSubgraphAuction("auctionsNFT", x.tokenAddress);
 
     const itm = {
       "id":`${x.tokenAddress}-${x.sellerNonce}`,
-      "hash":_hash.fraktalNft.hash
+      "hash":_hash.tokenizeNft.hash
     };
 
     auctionDataHash.push(itm);
@@ -221,4 +221,4 @@ async function mapAuctionToFraktal(auctionData) {
   return auctionItems;
 }
 
-export {infuraConfig, mapFixedPrice, mapAuctionToFraktal}
+export {infuraConfig, mapFixedPrice, mapAuctionToTokenize}

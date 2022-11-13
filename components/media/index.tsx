@@ -4,7 +4,7 @@ import {Box, Spinner} from "@chakra-ui/react";
 
 const NFTMedia = ({imageURL, setIsImageLoaded, type, metadata={}}) => {
 
-    const [image, setImage] = useState<string>('https://image.fraktal.io/?height=350&image=' + encodeURIComponent(imageURL));
+    const [image, setImage] = useState<string>('https://image.tokenize.io/?height=350&image=' + encodeURIComponent(imageURL));
     const [video, setVideo] = useState<string>("");
 
     async function loadMedia() {

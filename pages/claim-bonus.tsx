@@ -108,7 +108,7 @@ export default function ClaimBonus() {
   return (
     <VStack spacing="0" mb="12.8rem">
       <Head>
-        <title>Fraktal - Bonus Airdrop</title>
+        <title>Tokenize - Bonus Airdrop</title>
       </Head>
       <VStack w="96.4rem" spacing="0" justifyContent="space-between" mb="4rem">
         <Text className="semi-48">Bonus Hodler Airdrop 💎🤲</Text><Countdown date={1648382400000} renderer={renderer}/>,

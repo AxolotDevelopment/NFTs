@@ -44,8 +44,8 @@ import {
   unlistItem,
   getApproved,
   getFraktionsIndex,
-  claimFraktalSold,
-  isFraktalOwner,
+  claimTokenizeSold,
+  isTokenizeOwner,
   claimAirdrop,
 } from "@/utils/contractCalls";
 /**
@@ -121,13 +121,13 @@ export default function DetailsView() {
     async function getNFTData() {
       if (isPageReady) {
         await getOffers();
-        await getFraktal();
+        await getTokenize();
       }
     }
     getNFTData();
   }, [isPageReady]);
 
-  async function getFraktal() {
+  async function getTokenize() {
     let fraktionsFetch = await getSubgraphData(
       "fraktions",
         tokenAddress
@@ -135,13 +135,13 @@ export default function DetailsView() {
     if (fraktionsFetch.listItems) {
       setFraktionsListed(fraktionsFetch.listItems);
     }
-    let fraktalFetch = await getSubgraphData("fraktal", tokenAddress);
+    let tokenizeFetch = await getSubgraphData("tokenize", tokenAddress);
     if (
-      fraktalFetch &&
-      fraktalFetch.fraktalNfts &&
-      fraktalFetch.fraktalNfts[0]
+      tokenizeFetch &&
+      tokenizeFetch.tokenizeNfts &&
+      tokenizeFetch.tokenizeNfts[0]
     ) {
-      let nftObjects = await createObject(fraktalFetch.fraktalNfts[0]);
+      let nftObjects = await createObject(tokenizeFetch.tokenizeNfts[0]);
       if (nftObjects) {
         let investorsWBalance = nftObjects.balances.filter(x => {
           return parseInt(x.amount) > 0;
@@ -150,13 +150,13 @@ export default function DetailsView() {
         setNftObject(nftObjects);
         setIsLoading(false);
       }
-      if (fraktalFetch.fraktalNfts[0].offers) {
-        setOffers(fraktalFetch.fraktalNfts[0].offers);
+      if (tokenizeFetch.tokenizeNfts[0].offers) {
+        setOffers(tokenizeFetch.tokenizeNfts[0].offers);
       }
-      if (fraktalFetch.fraktalNfts[0].collateral) {
-        setCollateralNft(fraktalFetch.fraktalNfts[0].collateral);
+      if (tokenizeFetch.tokenizeNfts[0].collateral) {
+        setCollateralNft(tokenizeFetch.tokenizeNfts[0].collateral);
       }
-      let revenuesValid = fraktalFetch.fraktalNfts[0].revenues.filter(x => {
+      let revenuesValid = tokenizeFetch.tokenizeNfts[0].revenues.filter(x => {
         return x.value > 0;
       });
       if (revenuesValid) {
@@ -183,7 +183,7 @@ export default function DetailsView() {
     if (tokenAddress && account && provider) {
       try {
         let index = await getFraktionsIndex(provider, tokenAddress);
-        let isOwner = await isFraktalOwner(account, provider, tokenAddress);
+        let isOwner = await isTokenizeOwner(account, provider, tokenAddress);
         let userBalance = await getBalanceFraktions(
             account,
             provider,
@@ -291,7 +291,7 @@ export default function DetailsView() {
             toast.close(learnToastId);
             window?.localStorage.setItem('userReadDoc', 'true');
             window.open(
-              'https://docs.fraktal.io/fraktal-governance-token-frak/airdrop',
+              'https://docs.tokenize.io/tokenize-governance-token-frak/airdrop',
               '_blank'
             );
           }}
@@ -309,10 +309,10 @@ export default function DetailsView() {
     }
   }
 
-  async function claimFraktal() {
+  async function claimTokenize() {
     // this one goes to offersCard
     try {
-      await claimFraktalSold(tokenAddress, provider, marketAddress);
+      await claimTokenizeSold(tokenAddress, provider, marketAddress);
     } catch (e) {
       console.error("There has been an error: ", e);
     }
@@ -444,12 +444,12 @@ export default function DetailsView() {
                   </div>
               </VStack>
               </HStack>
-              {/* for the defrak bug, i leave this function to claim the fraktal
-          <button onClick={()=>claimFraktal()}>Claim</button>
+              {/* for the defrak bug, i leave this function to claim the tokenize
+          <button onClick={()=>claimTokenize()}>Claim</button>
           */}
               <UserOwnership
                 fraktions={userFraktions}
-                isFraktalOwner={isOwner}
+                isTokenizeOwner={isOwner}
                 collateral={collateralNft}
                 isApproved={fraktionsApproved}
                 marketAddress={marketAddress}

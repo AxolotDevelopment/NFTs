@@ -147,7 +147,7 @@ const NFTAuctionItem = forwardRef<HTMLDivElement, NFTItemProps>(
                 }
               >
                 <Image
-                  src={'https://image.fraktal.io/?height=350&image=' + encodeURIComponent(imageURL)}
+                  src={'https://image.tokenize.io/?height=350&image=' + encodeURIComponent(imageURL)}
                   width="100%"
                   height="100%"
                   objectFit="cover"

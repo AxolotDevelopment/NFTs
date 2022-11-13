@@ -39,7 +39,7 @@ import { BigNumber, utils } from "ethers";
 import { getSubgraphData, LIMITED_ITEMS, LIMITED_AUCTIONS } from "../utils/graphQueries";
 
 /**
- * FRAKTAL Components
+ * TOKENIZE Components
  */
 import Anchor from '@/components/anchor';
 import FrakButton from "@/components/button";
@@ -52,7 +52,7 @@ import Search from "@/components/search";
  * SEARCH Utils
  */
 import {getItems} from '@/utils/search';
-import { mapFixedPrice, mapAuctionToFraktal } from "@/utils/nftHelpers";
+import { mapFixedPrice, mapAuctionToTokenize } from "@/utils/nftHelpers";
 /**
  * Filters
  * @type {string}
@@ -187,7 +187,7 @@ const Marketplace: React.FC = () => {
               orderBy: orderBy,
               ...additionalQueryParams
         });
-        mappedItems = data.listItems !== undefined ? await mapFixedPrice(data) : await mapAuctionToFraktal(data);
+        mappedItems = data.listItems !== undefined ? await mapFixedPrice(data) : await mapAuctionToTokenize(data);
     }
 
     if (mappedItems?.length > 0) {
@@ -237,7 +237,7 @@ const Marketplace: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Fraktal - Marketplace</title>
+        <title>Tokenize - Marketplace</title>
       </Head>
       <VStack spacing="0" mb="12.8rem">
         <Flex w="96.4rem">

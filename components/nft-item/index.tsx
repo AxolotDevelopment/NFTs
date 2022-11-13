@@ -78,12 +78,12 @@ const NFTItem = forwardRef<HTMLDivElement, NFTItemProps>(
     const [isListed, setIsListed] = useState(false);
     const [isUnlisting, setIsUnlisting] = useState(false);
     const [isClaiming, setIsClaiming] = useState(false);
-    const { fraktions, fraktals } = useUserContext();
+    const { fraktions, tokenizes } = useUserContext();
     const { account, provider, marketAddress, factoryAddress } = useWeb3Context();
     const { closeLoadingModalAfterDelay } = useLoadingScreenHandler()
 
     const canFrak =
-      item && !!(fraktals || []).find((fraktion) => fraktion.id === item.id);
+      item && !!(tokenizes || []).find((fraktion) => fraktion.id === item.id);
 
     const canList =
       item && !!(fraktions || []).find((fraktion) => fraktion.id === item.id);

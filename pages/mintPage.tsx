@@ -11,7 +11,7 @@ import { utils } from "ethers";
 import {
   createNFT,
   approveMarket,
-  importFraktal,
+  importTokenize,
   getIndexUsed,
   listItem,
   getApproved,
@@ -26,7 +26,7 @@ import NFTItem from "../components/nft-item";
 const { create } = require("ipfs-http-client");
 
 export default function MintPage() {
-//   const { fraktals, nfts } = useUserContext();
+//   const { tokenizes, nfts } = useUserContext();
 //   const router = useRouter();
 //   const { account, provider, marketAddress, factoryAddress } = useWeb3Context();
 //   const [ipfsNode, setIpfsNode] = useState();
@@ -169,7 +169,7 @@ export default function MintPage() {
 
 
 // // FUNCTIONS FOR LISTING
-//   const fraktalReady = tokenMintedAddress
+//   const tokenizeReady = tokenMintedAddress
 //     && totalAmount > 0
 //     && totalAmount <= 10000
 //     && totalPrice > 0
@@ -181,7 +181,7 @@ export default function MintPage() {
 //     })
 //   }
 
-//   async function importFraktalToMarket() {
+//   async function importTokenizeToMarket() {
 //     let index = 0;
 //     let isUsed = true;
 //     while (isUsed == true) {
@@ -189,7 +189,7 @@ export default function MintPage() {
 //       isUsed = await getIndexUsed(index, provider, tokenMintedAddress);
 //     }
 //     if (isUsed == false) {
-//       await importFraktal(
+//       await importTokenize(
 //         tokenMintedAddress,
 //         index,
 //         provider,
@@ -248,11 +248,11 @@ export default function MintPage() {
 //     if(!minted){
 //       return 'Mint your new token to start the process of Fraktionalization and Listing.'
 //     }else if(minted && !marketApproved){
-//       return 'NFT succesfully minted! Approve the transfer of your Fraktal NFT and future Fraktions transfers.'
+//       return 'NFT succesfully minted! Approve the transfer of your Tokenize NFT and future Fraktions transfers.'
 //     }else if(minted && marketApproved && !fraktionalized){
-//       return 'Transfer rights granted! Now transfer your Fraktal NFT to the Marketplace. The Fraktions will remain in your wallet.'
+//       return 'Transfer rights granted! Now transfer your Tokenize NFT to the Marketplace. The Fraktions will remain in your wallet.'
 //     }else{
-//       return 'Fraktal NFT received! List your Fraktions on the Marketplace. If someone buys your Fraktions the Marketplace contract will transfer them'
+//       return 'Tokenize NFT received! List your Fraktions on the Marketplace. If someone buys your Fraktions the Marketplace contract will transfer them'
 //     }
 //   };
 
@@ -343,9 +343,9 @@ export default function MintPage() {
 //                 {!tokenToImport && !tokenMintedAddress ? (
 //                   <div>
 //                     SELECT AN NFT FROM YOUR WALLET
-//                     {fraktals && fraktals.length && (
+//                     {tokenizes && tokenizes.length && (
 //                       <div>
-//                         Your Fraktals
+//                         Your Tokenizes
 //                         <div>
 //                           <Grid
 //                             mt="40px !important"
@@ -356,7 +356,7 @@ export default function MintPage() {
 //                             templateColumns="repeat(3, 1fr)"
 //                             gap="3.2rem"
 //                           >
-//                             {fraktals.map(item => (
+//                             {tokenizes.map(item => (
 //                               <div
 //                                 onClick={() => {
 //                                   setTokenMintedAddress(item.id);
@@ -481,13 +481,13 @@ export default function MintPage() {
 //             <FrakButton4
 //               status = {!fraktionalized ? 'open' : 'done'}
 //               disabled = {!marketApproved || !tokenMintedAddress}
-//               onClick = {()=>importFraktalToMarket()}
+//               onClick = {()=>importTokenizeToMarket()}
 //             >
 //               3. Transfer
 //             </FrakButton4>
 //             <FrakButton4
 //               status={!listed ? "open" : "done"}
-//               disabled={!fraktalReady}
+//               disabled={!tokenizeReady}
 //               onClick={() => listNewItem()}
 //             >
 //               4. List

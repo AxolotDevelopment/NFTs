@@ -6,7 +6,7 @@ const web3 = createAlchemyWeb3(
     getAlchemyApi(parseInt(process.env.NEXT_PUBLIC_ALCHEMY_API_KEY))
 );
 
-export async function getNftMetadata(contractAddress, tokenId = "1") {
+export async function getNftMetadata(contractAddress, tokenId = "80001") {
     const response = await web3.alchemy.getNftMetadata({
         contractAddress: contractAddress,
         tokenId: tokenId

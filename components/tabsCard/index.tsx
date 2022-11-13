@@ -25,7 +25,7 @@ import {
  */
 import styles from './tabsCard.module.css';
 /**
- * FRAKTAL Components
+ * TOKENIZE Components
  */
 import FrakButton from '@/components/button';
 import FrakButton2 from '@/components/button2';

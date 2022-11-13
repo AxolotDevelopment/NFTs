@@ -91,7 +91,7 @@ export default function MintNFTView() {
   return (
     <VStack spacing="0" mb="12.8rem">
       <Head>
-        <title>Fraktal - Mint NFT</title>
+        <title>Tokenize - Mint NFT</title>
       </Head>
       <div className={styles.header}>Mint NFT</div>
       <HStack

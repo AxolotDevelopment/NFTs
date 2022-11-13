@@ -19,7 +19,7 @@ async function mapListed(listedItems) {
 async function mapAuctions(listedItems) {
     let objects = await Promise.all(
         listedItems.map(x => {
-            x.hash = x.fraktal.hash;
+            x.hash = x.tokenize.hash;
             let res = createListedAuction(x);
             if (typeof res !== "undefined") {
                 return res;
@@ -80,9 +80,9 @@ async function getItems(query, options = []) {
     let listedObjects = [];
     let notForSale = [];
     let auctionsObjects = [];
-    if (searchData?.fraktalSearch !== undefined && searchData?.fraktalSearch.length > 0) {
-        listedObjects = await mapListed(searchData.fraktalSearch);
-        notForSale = await mapNotForSale(searchData?.fraktalSearch);
+    if (searchData?.tokenizeSearch !== undefined && searchData?.tokenizeSearch.length > 0) {
+        listedObjects = await mapListed(searchData.tokenizeSearch);
+        notForSale = await mapNotForSale(searchData?.tokenizeSearch);
     }
     if (searchData?.userSearch !== undefined && searchData?.userSearch.length > 0) {
         //TODO - Validate Creator ID

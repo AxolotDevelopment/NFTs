@@ -15,7 +15,7 @@ import {
   CLAIMING_FRAKTIONS_PROFIT,
   CLAIMING_REVENUE,
   DEPOSIT_REVENUE,
-  IMPORT_FRAKTAL,
+  IMPORT_TOKENIZE,
   IMPORT_NFT,
   MINT_NFT,
   LISTING_NFT,
@@ -24,7 +24,7 @@ import {
   UNLIST_NFT,
   UNLIST_AUCTION_NFT,
   REJECT_OFFER,
-  EXPORT_FRAKTAL,
+  EXPORT_TOKENIZE,
   CLAIM_NFT,
   CLAIM_DEPOSITED_FRAKTIONS,
   CLAIM_CONTRIBUTED_ETH,
@@ -107,13 +107,13 @@ const depositingRevenue = {
   },
 };
 
-const importFraktal = {
+const importTokenize = {
   heading: 'Fraktionalizing NFT',
   button: {
     text: 'Success',
   },
 };
-const exportFraktal = {
+const exportTokenize = {
   heading: 'De-Fraktionalizing NFT',
   button: {
     text: 'Success',
@@ -121,7 +121,7 @@ const exportFraktal = {
 };
 
 const importNFT = {
-  heading: 'Importing NFT to Fraktal',
+  heading: 'Importing NFT to Tokenize',
   button: {
     text: 'Success',
   },
@@ -221,11 +221,11 @@ const loadingScreenReducer = (state = initState, action) => {
     case IMPORT_NFT:
       loadingScreenObject = importNFT;
       break;
-    case IMPORT_FRAKTAL:
-      loadingScreenObject = importFraktal;
+    case IMPORT_TOKENIZE:
+      loadingScreenObject = importTokenize;
       break;
-    case EXPORT_FRAKTAL:
-      loadingScreenObject = exportFraktal;
+    case EXPORT_TOKENIZE:
+      loadingScreenObject = exportTokenize;
       break;
     case MINT_NFT:
       loadingScreenObject = mintingNFT;
@@ -271,7 +271,7 @@ const loadingScreenReducer = (state = initState, action) => {
         case IMPORT_NFT:
           loadingScreenObject.step = 2;
           break;
-        case IMPORT_FRAKTAL:
+        case IMPORT_TOKENIZE:
           loadingScreenObject.step = 4;
           break;
         case LISTING_NFT:
@@ -288,7 +288,7 @@ const loadingScreenReducer = (state = initState, action) => {
         case APPROVE_TOKEN:
           loadingScreenObject.step = 2;
           break;
-        case IMPORT_FRAKTAL:
+        case IMPORT_TOKENIZE:
           loadingScreenObject.step = 3;
           break;
         case LISTING_NFT:
@@ -302,7 +302,7 @@ const loadingScreenReducer = (state = initState, action) => {
         case APPROVE_TOKEN:
           loadingScreenObject.step = 1;
           break;
-        case IMPORT_FRAKTAL:
+        case IMPORT_TOKENIZE:
           loadingScreenObject.step = 2;
           break;
       }

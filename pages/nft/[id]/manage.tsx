@@ -17,7 +17,7 @@ import {
   createRevenuePayment,
   // lockShares,
   unlockShares,
-  claimFraktalSold,
+  claimTokenizeSold,
   voteOffer,
   defraktionalize,
   approveMarket,
@@ -119,14 +119,14 @@ export default function ManageNFTView() {
       setIndex(index);
     }
     let nftObjects;
-    let obj = await getSubgraphData('marketid_fraktal', index);
-    if (obj.fraktalNfts[0].revenues.length) {
-      let revenuesValid = obj.fraktalNfts[0].revenues.filter((x) => {
+    let obj = await getSubgraphData('marketid_tokenize', index);
+    if (obj.tokenizeNfts[0].revenues.length) {
+      let revenuesValid = obj.tokenizeNfts[0].revenues.filter((x) => {
         return x.value > 0;
       });
       setRevenues(revenuesValid);
     }
-    nftObjects = await createObject(obj.fraktalNfts[0]);
+    nftObjects = await createObject(obj.tokenizeNfts[0]);
     setNftObject(nftObjects);
     if (account) {
       // get the balance from the contract!
@@ -140,15 +140,15 @@ export default function ManageNFTView() {
       }
     }
     if (account && nftObjects) {
-      if (obj.fraktalNfts[0].offers.length) {
-        let offersValid = obj.fraktalNfts[0].offers.filter((x) => {
+      if (obj.tokenizeNfts[0].offers.length) {
+        let offersValid = obj.tokenizeNfts[0].offers.filter((x) => {
           return x.value > 0;
         });
         if (offersValid[0] && offersValid[0].value > 0) {
           setOffers(offersValid);
           setView('offer');
         }
-        if (obj.fraktalNfts[0].status.startsWith('sold')) {
+        if (obj.tokenizeNfts[0].status.startsWith('sold')) {
           setView('accepted');
         }
       }
@@ -184,8 +184,8 @@ export default function ManageNFTView() {
     }
   }
 
-  async function claimFraktal() {
-    claimFraktalSold(nftObject.marketId, provider, contractAddress).then(() =>
+  async function claimTokenize() {
+    claimTokenizeSold(nftObject.marketId, provider, contractAddress).then(() =>
       router.reload()
     );
   }
@@ -208,7 +208,7 @@ export default function ManageNFTView() {
   return (
     <VStack spacing="0" mb="12.8rem">
       <Head>
-        <title>Fraktal - NFT</title>
+        <title>Tokenize - NFT</title>
       </Head>
       <div>
         <Link href={EXPLORE}>

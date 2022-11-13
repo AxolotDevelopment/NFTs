@@ -52,7 +52,7 @@ import { useWeb3Context } from '@/contexts/Web3Context';
  */
 import {
   APPROVE_TOKEN,
-  IMPORT_FRAKTAL,
+  IMPORT_TOKENIZE,
   IMPORT_NFT,
   LISTING_NFT,
   rejectContract,
@@ -70,7 +70,7 @@ import {
   getIndexUsed,
   importERC1155,
   importERC721,
-  importFraktal,
+  importTokenize,
   listItem,
   listItemAuction,
 } from '@/utils/contractCalls';
@@ -160,7 +160,7 @@ function ImportNFTPage() {
     )
       .then((receipt) => {
         setIsMarketApproved(true);
-        importFraktalToMarket();
+        importTokenizeToMarket();
       })
       .catch((error) => {
         store.dispatch(
@@ -226,9 +226,9 @@ function ImportNFTPage() {
   }, [isNFTImported, tokenMintedAddress]);
 
   /**
-   * Import Fraktal to Market
+   * Import Tokenize to Market
    */
-  async function importFraktalToMarket() {
+  async function importTokenizeToMarket() {
     let tokenID = 0;
     let isUsed = true;
     // todo: add spinner
@@ -239,7 +239,7 @@ function ImportNFTPage() {
     }
 
     if (isUsed == false) {
-      const response = await importFraktal(
+      const response = await importTokenize(
         tokenMintedAddress,
         tokenID,
         provider,
@@ -253,9 +253,9 @@ function ImportNFTPage() {
         .catch((error) => {
           store.dispatch(
             rejectContract(
-              IMPORT_FRAKTAL,
+              IMPORT_TOKENIZE,
               error,
-              importFraktalToMarket,
+              importTokenizeToMarket,
               actionOpts
             )
           );
@@ -280,7 +280,7 @@ function ImportNFTPage() {
     const response = await listItem(
       tokenMintedAddress,
       fei, // amount of fraktions to list
-      weiPerFrak, // price per fraktal
+      weiPerFrak, // price per tokenize
       provider,
       marketAddress,
       NFTName,
@@ -357,7 +357,7 @@ function ImportNFTPage() {
     let nftsERC1155Wallet;
     let fraktionsObjects;
     let fraktionsObjectsClean;
-    let fraktalsClean: null | any[];
+    let tokenizesClean: null | any[];
     let totalAddresses: null | string[];
     let nftObjectsClean;
 
@@ -393,22 +393,22 @@ function ImportNFTPage() {
           return x != null;
         });
       }
-      // Fraktals retrieval
-      let userFraktalsFetched = fobjects.users[0].fraktals;
+      // Tokenizes retrieval
+      let userTokenizesFetched = fobjects.users[0].tokenizes;
 
-      let userFraktalObjects = await Promise.all(
-          userFraktalsFetched.map(x => {
+      let userTokenizeObjects = await Promise.all(
+          userTokenizesFetched.map(x => {
             return createObject(x);
           })
       );
 
-      if (userFraktalObjects) {
-        fraktalsClean = userFraktalObjects.filter(x => {
+      if (userTokenizeObjects) {
+        tokenizesClean = userTokenizeObjects.filter(x => {
           return x != null && x.imageURL && x.status != "retrieved";
         });
       }
 
-      let userFraktalAddresses = fraktalsClean.map(x => {
+      let userTokenizeAddresses = tokenizesClean.map(x => {
         return x.id;
       });
 
@@ -416,7 +416,7 @@ function ImportNFTPage() {
         return x.id;
       });
 
-      totalAddresses = userFraktalAddresses.concat(userFraktionsAddreses);
+      totalAddresses = userTokenizeAddresses.concat(userFraktionsAddreses);
     }
 
     if (
@@ -436,7 +436,7 @@ function ImportNFTPage() {
       });
 
       totalNFTs = nftsERC721Wallet.concat(nftsERC1155Wallet);
-      if (!fobjects || !fobjects.users[0] || !fobjects.users[0].fraktals) {
+      if (!fobjects || !fobjects.users[0] || !fobjects.users[0].tokenizes) {
         totalAddresses = [];
       }
 
@@ -742,7 +742,7 @@ function ImportNFTPage() {
                 <FrakButton4
                   status={!isFraktionsAllowed ? 'open' : 'done'}
                   onClick={() => {
-                    importFraktalToMarket();
+                    importTokenizeToMarket();
                   }}
                 >
                   4. Transfer Fraktions
